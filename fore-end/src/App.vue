@@ -1,28 +1,27 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld/>
+    <Films></Films>
+
+    <Nav-bar></Nav-bar>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-
+import NavBar from './components/NavBar/index'
+import Films from './views/Films'
+import Cinema from './views/Cinema'
+import Center from './views/Center'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NavBar,
+    Films,
+    Cinema,
+    Center
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+@import "./styles/base.scss"
 </style>

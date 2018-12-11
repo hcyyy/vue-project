@@ -3,11 +3,14 @@
 import Vue from 'vue'
 import App from './App'
 
+// 去除VUE开发时的浏览器提示
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  components: { App },
+  components: {
+    App: App
+  },
   template: '<App/>'
 })
