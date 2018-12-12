@@ -1,26 +1,42 @@
 <template>
     <ul class="nav-bar">
-        <li>
-            <img src="./images/films.png">
-            <span>电影</span>
-        </li>
-        <li>
-             <img src="./images/cinemas.png">
-            <span>影院</span>
-        </li>
-        <li>
-             <img src="./images/uugroupon.png">
-            <span>9.9拼团</span>
-        </li>
-        <li>
-             <img src="./images/center.png">
-            <span>我的</span>
-        </li>
+        <router-link
+        v-for="(item,index) in bars"
+        :key="index"
+        :class="item.id"
+        :to="{ name: item.id}"
+        tag="li"
+        active-class="z-act">
+        <i class="img"></i>
+        <span v-text="item.name"></span>
+        </router-link>
     </ul>
 </template>
 <script>
 export default {
-  name: 'NavBar'
+  name: 'NavBar',
+  data () {
+    return {
+      bars: [
+        {
+          id: 'films',
+          name: '电影'
+        },
+        {
+          id: 'cinemas',
+          name: '影院'
+        },
+        {
+          id: 'spelling',
+          name: '9.9拼团'
+        },
+        {
+          id: 'center',
+          name: '我的'
+        }
+      ]
+    }
+  }
 }
 </script>
 
@@ -41,6 +57,50 @@ export default {
         justify-content: center;
         align-items: center;
         font-size: px2rem(12);
+
+        .img{
+            display: block;
+            width: px2rem(22);
+            height: px2rem(22);
+            background-size: 100%;
+        }
+
+        &.films{
+            .img{
+              background-image: url('./images/films.png');
+            }
+            &.z-act .img{
+              background-image: url('./images/films_on.png');
+            }
+        }
+
+        &.cinemas{
+            .img{
+              background-image: url('./images/cinemas.png');
+            }
+            &.z-act .img{
+              background-image: url('./images/cinemas_on.png');
+            }
+        }
+
+        &.spelling{
+            .img{
+              background-image: url('./images/uugroupon.png');
+            }
+        }
+
+        &.center{
+            .img{
+              background-image: url('./images/center.png');
+            }
+            &.z-act .img{
+              background-image: url('./images/center_on.png');
+            }
+        }
+
+        &.z-act{
+            color: #ff5f16;
+        }
     }
     }
 </style>

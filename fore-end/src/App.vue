@@ -1,23 +1,16 @@
 <template>
   <div id="app">
-    <Films></Films>
-
+    <router-view></router-view>
     <Nav-bar></Nav-bar>
   </div>
 </template>
 
 <script>
 import NavBar from './components/NavBar/index'
-import Films from './views/Films'
-import Cinema from './views/Cinema'
-import Center from './views/Center'
 export default {
   name: 'App',
   components: {
-    NavBar,
-    Films,
-    Cinema,
-    Center
+    NavBar
   }
 }
 </script>
