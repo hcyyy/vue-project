@@ -46,6 +46,7 @@ export default {
     display: flex;
     height: px2rem(50);
     border-top: px2rem(1) solid #ededed;
+    flex-shrink: 0;
     img {
         width: px2rem(21);
         height: px2rem(21);
