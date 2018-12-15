@@ -5,6 +5,8 @@ import Films from './views/Films.vue'
 import Cinema from './views/Cinema.vue'
 import Center from './views/Center.vue'
 import Spelling from './views/Spelling.vue'
+import Nowplay from './components/Nowplay'
+import SoonPlay from './components/SoonPlay'
 
 Vue.use(VueRouter)
 
@@ -13,7 +15,17 @@ const router = new VueRouter({
     {
       path: '/films',
       name: 'films',
-      component: Films
+      component: Films,
+      children: [
+        {
+          path: 'nowPlaying',
+          component: Nowplay
+        },
+        {
+          path: 'comingSoon',
+          component: SoonPlay
+        }
+      ]
     },
     {
       path: '/cinemas',
