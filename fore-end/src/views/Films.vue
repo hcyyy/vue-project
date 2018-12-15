@@ -56,26 +56,28 @@
         <!-- list -->
         <div class="film-list-content">
             <ul>
-                <li>
+                <li
+                v-for="(item,index) in films"
+                :key="index">
                     <div class="picture">
-                        <img src="../images/b1.jpg">
+                        <img :src="item.poster">
                     </div>
                     <div class="introduce">
                         <div>
-                            <span class="n-name">海王</span>
-                            <span class="n-item">3D</span>
+                            <span class="n-name">{{item.name}}</span>
+                            <span class="n-item">{{item.filmType.name}}</span>
                         </div>
                         <div>
                             <span class="g-label">观众评分</span>
-                            <span class="g-grade">7</span>
+                            <span class="g-grade">{{item.grade}}</span>
                         </div>
                         <div>
                             <span class="a-label">
-                                主演: 帕特里克·威尔森 妮可·基德曼 杜夫·龙格尔 温子仁 杰森·莫玛 安柏·赫德
+                                主演: {{ actorsList(item.actors) }}
                             </span>
                         </div>
                         <div>
-                            <span class="d-label">美国   澳大利亚 | 143分钟</span>
+                            <span class="d-label">{{item.nation}} | {{item.runtime}}</span>
                         </div>
                     </div>
                     <div class="buy">购票</div>
@@ -88,21 +90,59 @@
 
 <script>
 import Swiper from 'swiper'
+import axios from 'axios'
 export default {
   name: 'Films',
 
   data () {
     return {
-      curCity: ''
+      curCity: '',
+      films: [],
+      pageNum: 1,
+      pageSize: 5,
+      totalPage: 0
+    }
+  },
+
+  methods: {
+    getCityName () {
+      /* eslint-disable */ 
+      let myCity = new BMap.LocalCity()
+      myCity.get((result) => {
+      this.curCity = result.name;
+      })
+    },
+
+    getFilms () {
+        axios.get('/api/film/list',{
+            params: {
+                pageNum: this.pageNum,
+                pageSize: this.pageSize
+            }
+        })
+        .then((response) => {
+            let result = response.data;
+            if (result.code === 0) {
+                this.films = result.data.films
+            }else {
+                alert(result.msg)
+            }
+        })
+    },
+
+    actorsList (list) {
+        let arr = [];
+        arr = list.map(item => {
+            return item.name
+        })
+
+        return arr.join(' ');
     }
   },
 
   created () {
-    /* eslint-disable */ 
-    let myCity = new BMap.LocalCity()
-    myCity.get((result) => {
-        this.curCity = result.name;
-    })
+    this.getCityName();
+    this.getFilms();
   },
 
   mounted () {
