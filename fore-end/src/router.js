@@ -19,10 +19,12 @@ const router = new VueRouter({
       children: [
         {
           path: 'nowPlaying',
+          name: 'nowPlaying',
           component: Nowplay
         },
         {
           path: 'comingSoon',
+          name: 'comingSoon',
           component: SoonPlay
         }
       ]

@@ -28,6 +28,8 @@
                     <div class="buy">购票</div>
                 </li>
             </ul>
+
+            <div class="load-more" @click="loadMore">{{loadMoreText}}</div>
         </div>
 </template>
 
@@ -40,8 +42,9 @@ export default {
   data () {
     return {
       films: [],
+      loadMoreText: '点击,加载下一页',
       pageNum: 1,
-      pageSize: 5,
+      pageSize: 3,
       totalPage: 0
     }
   },
@@ -56,8 +59,18 @@ export default {
       })
         .then(response => {
           let result = response.data
+          console.log(result)
+
+          this.totalPage = Math.ceil(result.data.total / this.pageSize)
+
+          if (this.pageNum >= this.totalPage) {
+            this.loadMoreText = '页面加载完毕'
+          }
+
           if (result.code === 0) {
-            this.films = result.data.films
+            // this.films = result.data.films
+            // this.films = this.films.push(result)
+            this.films = this.films.concat(result.data.films)
           } else {
             alert(result.msg)
           }
@@ -71,6 +84,13 @@ export default {
       })
 
       return arr.join(' ')
+    },
+
+    loadMore () {
+      if (this.pageNum < this.totalPage) {
+        this.pageNum++
+        this.getFilms()
+      }
     }
   },
 
@@ -85,7 +105,7 @@ export default {
 .film-list-content {
   border-bottom: px2rem(1) solid #ededed;
   ul {
-    margin-left: px2rem(15);
+    margin: 0 px2rem(15);
     li {
       display: flex;
       flex-direction: row;
@@ -94,6 +114,7 @@ export default {
       padding: px2rem(15) px2rem(15) px2rem(15) 0;
       position: relative;
       height: px2rem(124);
+      border-bottom: px2rem(1) solid #d2d6dc;
       .picture {
         flex-shrink: 0;
         width: px2rem(66);
@@ -107,7 +128,7 @@ export default {
       //内容简介
       .introduce {
         height: px2rem(100);
-        width: px2rem(229);
+        width: px2rem(200);
         padding: 0 px2rem(10);
         div {
           overflow: hidden;
@@ -178,5 +199,11 @@ export default {
       }
     }
   }
+}
+
+.load-more{
+  height: px2rem(30);
+  line-height: px2rem(30);
+  text-align: center;
 }
 </style>

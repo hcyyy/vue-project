@@ -48,8 +48,8 @@
         <!-- 页面标签切换 -->
         <div class="tab-bar-wrapper">
             <ul class="tab-bar">
-                <li class="z-act" @click="switchList('now')"><span>正在热映</span></li>
-                <li @click="switchList('soon')"><span>即将上映</span></li>
+                <li :class="{ 'z-act': $route.path === '/films/nowPlaying' }" @click="switchList('now')"><span>正在热映</span></li>
+                <li :class="{ 'z-act': $route.path === '/films/comingSoon' }" @click="switchList('soon')"><span>即将上映</span></li>
             </ul>
         </div>
         <!-- 页面标签切换 -->
@@ -80,7 +80,9 @@ export default {
 
     switchList (type) {
         if (type === 'now') {
-            this.$router.push('/films/nowPlaying')
+            this.$router.push({
+                name: 'nowPlaying'
+            })
         } else {
             this.$router.push('/films/comingSoon')
         }
@@ -125,6 +127,9 @@ export default {
     .swiper-pagination-bullet{
         width: px2rem(10);
         height: px2rem(10) !important;
+    }
+    img{
+        width: 100%;
     }
 }
 
