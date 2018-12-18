@@ -1,5 +1,5 @@
 <template>
-  <div class="film-detail">
+  <div class="film">
     <div class="film-poster">
       <img src="https://pic.maizuo.com/usr/movie/f713d0f85512087679ac951e8565d187.jpg?x-oss-process=image/quality,Q_70" alt="">
     </div>
@@ -7,7 +7,7 @@
     <div class="film-detail">
       <div class="col">
         <div class="film-name">
-          <span class="name">{{ filmName }}</span>
+          <span class="name">海王</span>
           <span class="item">3D</span>
         </div>
         <div class="film-grade">
@@ -30,8 +30,44 @@
         <i class="iconfont icon-xiala"></i>
       </div>
     </div>
+    <!-- <router-link to="/film/9898">我要看猫王</router-link> -->
 
-    <router-link to="/film/9898">我要看猫王</router-link>
+    <div class="actors">
+      <div class="actors-title-bar">
+        <span>演职人员</span>
+      </div>
+      <div class="actors-list">
+        <ul class="row-scroll-items-nav">
+          <li class="row-scroll-item"></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="photos">
+      <div class="photos-title-bar">
+        <span class="photos-title-text">剧照</span>
+      </div>
+      <div class="photos-list">
+        <ul class="row-scroll-items-nav">
+          <li class="photos-item-wrap">
+            <div class="photos-item">
+              <div class="photos-img">
+                <div class="padding"></div>
+                <div class="lazy-img-wrap">
+                  <img data-v-fa55ebd6="" src="https://pic.maizuo.com/usr/100004469/01e73fe34740fecd70a62dca0f8a124a.jpg?x-oss-process=image/quality,Q_70" class="target-img">
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <a href="#">
+      <div class="goSchedule">
+        选座购票
+      </div>
+    </a>
   </div>
 </template>
 
@@ -53,45 +89,45 @@ export default {
   },
 
   methods: {
-    getFilmDetail () {
-      setTimeout(() => {
-        if (this.$route.params.filmId === 4469) {
-          this.filmName = '海王'
-        } else {
-          this.filmName = '猫王'
-        }
-      }, 2000)
-    }
+    // getFilmDetail () {
+    //   setTimeout(() => {
+    //     if (this.$route.params.filmId === 4469) {
+    //       this.filmName = '海王'
+    //     } else {
+    //       this.filmName = '猫王'
+    //     }
+    //   }, 2000)
+    // }
   },
 
   created () {
     // let filmId = this.$route.params.filmId;
-    this.getFilmDetail()
+    // this.getFilmDetail()
   }
 
-//   beforeRouteEnter (to, from, next) {
-//     console.log('进入到详情')
-//     next()
-//   },
+  //   beforeRouteEnter (to, from, next) {
+  //     console.log('进入到详情')
+  //     next()
+  //   },
 
-//   beforeRouteUpdate (to, from, next) {
-//     console.log('详情页组件路由有更新的情况, 会进来')
-//     // 上面 watch $route 的代码可以在这里写
-//     this.getFilmDetail()
-//     next()
-//   },
+  //   beforeRouteUpdate (to, from, next) {
+  //     console.log('详情页组件路由有更新的情况, 会进来')
+  //     // 上面 watch $route 的代码可以在这里写
+  //     this.getFilmDetail()
+  //     next()
+  //   },
 
-//   beforeRouteLeave (to, from, next) {
-//     console.log('详情页离开之前，会调用')
-//     next()
-//   }
+  //   beforeRouteLeave (to, from, next) {
+  //     console.log('详情页离开之前，会调用')
+  //     next()
+  //   }
 }
 </script>
 
 <style lang="scss">
-@import '@/styles/common/px2rem.scss';
+@import "@/styles/common/px2rem.scss";
 
-.film-detail {
+.film {
   flex: 1;
   overflow-y: auto;
 
@@ -174,6 +210,19 @@ export default {
         }
       }
     }
+  }
+
+  .goSchedule{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 49px;
+    width: 100%;
+    text-align: center;
+    background-color: #ff5f16;
+    color: #fff;
+    font-size: 16px;
+    line-height: 49px;
   }
 }
 </style>
