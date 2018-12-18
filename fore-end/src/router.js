@@ -1,52 +1,68 @@
 import VueRouter from 'vue-router'
 import Vue from 'vue'
 
-import Films from './views/Films.vue'
-import Cinema from './views/Cinema.vue'
-import Center from './views/Center.vue'
-import Spelling from './views/Spelling.vue'
-import Nowplay from './components/Nowplay'
-import SoonPlay from './components/SoonPlay'
-
 Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
     {
-      path: '/films',
-      name: 'films',
-      component: Films,
+      path: '/',
+      component: () => import('./views/Home.vue'),
       children: [
         {
-          path: 'nowPlaying',
-          name: 'nowPlaying',
-          component: Nowplay
+          path: '',
+          redirect: '/films/nowPlaying'
         },
         {
-          path: 'comingSoon',
-          name: 'comingSoon',
-          component: SoonPlay
+          path: 'films',
+          name: 'films',
+          component: () => import('./views/Films.vue'),
+          children: [
+            {
+              path: '',
+              redirect: '/films/nowPlaying'
+            },
+            {
+              path: 'nowPlaying',
+              name: 'nowPlaying',
+              component: () => import('./components/Nowplay/index.vue')
+            },
+            {
+              path: 'comingSoon',
+              name: 'comingSoon',
+              component: () => import('./components/SoonPlay/index.vue')
+            }
+          ]
+        },
+        {
+          // 影院页
+          path: 'cinemas',
+          name: 'cinemas',
+          component: () => import('./views/Cinema.vue')
+        },
+        {
+          // 个人中心页
+          path: 'center',
+          name: 'center',
+          component: () => import('./views/Center.vue')
+        },
+        {
+          // 拼团页
+          path: 'spelling',
+          name: 'spelling',
+          component: () => import('./views/Spelling.vue')
         }
       ]
     },
     {
-      path: '/cinemas',
-      name: 'cinemas',
-      component: Cinema
-    },
-    {
-      path: '/center',
-      name: 'center',
-      component: Center
-    },
-    {
-      path: '/spelling',
-      name: 'spelling',
-      component: Spelling
+      // 详情页面
+      path: '/film/:filmId',
+      name: 'filmDetail',
+      component: () => import('./views/FilmDetail.vue')
     },
     {
       path: '*',
-      redirect: '/films'
+      redirect: 'films/nowPlaying'
     }
   ]
 })

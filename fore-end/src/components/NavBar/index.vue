@@ -42,7 +42,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../styles/common/px2rem.scss';
-    .nav-bar {
+   .nav-bar {
     display: flex;
     height: px2rem(50);
     border-top: px2rem(1) solid #ededed;

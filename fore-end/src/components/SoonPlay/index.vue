@@ -77,16 +77,19 @@ export default {
 
     actorsList (list) {
       let arr = []
-      arr = list.map(item => {
-        return item.name
-      })
-
+      if (list) {
+        arr = list.map(item => {
+          return item.name
+        })
+      }
       return arr.join(' ')
     },
 
     loadMore () {
-      this.pageNum++
-      this.getFilms()
+      if (this.pageNum < this.totalPage) {
+        this.pageNum++
+        this.getFilms()
+      }
     }
   },
 
