@@ -4,7 +4,7 @@
         v-for="(item,index) in bars"
         :key="index"
         :class="item.id"
-        :to="{ name: item.id}"
+        :to="{ path: item.path}"
         tag="li"
         active-class="z-act">
         <i class="img"></i>
@@ -19,19 +19,23 @@ export default {
     return {
       bars: [
         {
-          id: 'films',
+          id: 'nowPlaying',
+          path: '/films',
           name: '电影'
         },
         {
           id: 'cinemas',
+          path: '/cinemas',
           name: '影院'
         },
         {
           id: 'spelling',
+          path: '/spelling',
           name: '9.9拼团'
         },
         {
           id: 'center',
+          path: '/center',
           name: '我的'
         }
       ]
@@ -66,7 +70,7 @@ export default {
             background-size: 100%;
         }
 
-        &.films{
+        &.nowPlaying{
             .img{
               background-image: url('./images/films.png');
             }

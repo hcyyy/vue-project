@@ -15,7 +15,7 @@ const router = new VueRouter({
         },
         {
           path: 'films',
-          name: 'films',
+          // name: 'films',
           component: () => import('./views/Films.vue'),
           children: [
             {
