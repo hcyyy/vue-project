@@ -1,30 +1,35 @@
 <template>
-  <div class="film">
+<div class="film">
+  <ul>
+    <li
+    v-for="(item,index) in details"
+    :key="index"
+    @click="getFilmDetail(item.filmId)">
     <div class="film-poster">
-      <img src="https://pic.maizuo.com/usr/movie/f713d0f85512087679ac951e8565d187.jpg?x-oss-process=image/quality,Q_70" alt="">
+      <img :src="item.poster">
     </div>
 
     <div class="film-detail">
       <div class="col">
         <div class="film-name">
-          <span class="name">海王</span>
-          <span class="item">3D</span>
+          <span class="name">{{item.name}}</span>
+          <span class="item">{{item.filmType.name}}</span>
         </div>
         <div class="film-grade">
-          <span class="grade">7.2</span>
+          <span class="grade">{{item.grade}}</span>
           <span class="grade-text">分</span>
         </div>
       </div>
 
-      <div class="film-category grey-text">动作 | 奇幻 | 冒险</div>
+      <div class="film-category grey-text">{{item.category}}</div>
       <div class="film-premiere-time grey-text">
-        2018-12-07上映
+        {{filmdeta(item.premiereAt)}}上映
       </div>
       <div class="film-nation-runtime grey-text">
-        美国   澳大利亚  | 143分钟
+        {{item.nation}}  | {{item.runtime}}分钟
       </div>
       <div class="film-synopsis grey-text">
-        本片由杰森·莫玛领衔主演，讲述半人半亚特兰蒂斯血统的亚瑟·库瑞踏上永生难忘的征途——他不但需要直面自己的特殊身世，更不得不面对生而为王的考验：自己究竟能否配得上“海王”之名。
+        {{item.synopsis}}
       </div>
       <div class="toggle">
         <i class="iconfont icon-xiala"></i>
@@ -38,7 +43,17 @@
       </div>
       <div class="actors-list">
         <ul class="row-scroll-items-nav">
-          <li class="row-scroll-item"></li>
+          <li class="row-scroll-item" v-for="(item,index) in item.actors" :key="index">
+            <div class="actors-item">
+              <div class="actors-img">
+                <div class="lazy-img-wrap">
+                  <img class="target-img" :src="item.avatarAddress">
+                </div>
+              </div>
+              <span class="actors-name"> {{item.name}}</span>
+              <span class="actors-role"> {{item.role}}</span>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -46,15 +61,19 @@
     <div class="photos">
       <div class="photos-title-bar">
         <span class="photos-title-text">剧照</span>
+        <span class="photos-to-all">
+          全部(6)
+          <i class="iconfont"></i>
+        </span>
       </div>
       <div class="photos-list">
         <ul class="row-scroll-items-nav">
-          <li class="photos-item-wrap">
+          <li class="photos-item-wrap" v-for="(item,index) in item.photos" :key="index">
             <div class="photos-item">
               <div class="photos-img">
                 <div class="padding"></div>
                 <div class="lazy-img-wrap">
-                  <img data-v-fa55ebd6="" src="https://pic.maizuo.com/usr/100004469/01e73fe34740fecd70a62dca0f8a124a.jpg?x-oss-process=image/quality,Q_70" class="target-img">
+                  <img :src="item" class="target-img">
                 </div>
               </div>
             </div>
@@ -68,59 +87,56 @@
         选座购票
       </div>
     </a>
-  </div>
+    </li>
+  </ul>
+</div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'FilmDetail',
 
   data () {
     return {
-      filmName: ''
+      filmName: '',
+      details: []
     }
   },
 
-  watch: {
-    // $route (newVal, oldVal) {
-    //   // $route 发生变化，我就请求后台数据
-    //   this.getFilmDetail();
-    // }
-  },
-
   methods: {
-    // getFilmDetail () {
-    //   setTimeout(() => {
-    //     if (this.$route.params.filmId === 4469) {
-    //       this.filmName = '海王'
-    //     } else {
-    //       this.filmName = '猫王'
-    //     }
-    //   }, 2000)
-    // }
+    getFilmDetail () {
+      axios
+        .get('/api/film1/xqy', {
+          params: {
+            filmId: this.$route.params.filmId
+          }
+        })
+        .then(response => {
+          let result = response.data
+          if (result.code === 0) {
+            this.details = result.details
+          } else {
+            alert(result.msg)
+          }
+        })
+    },
+
+    filmdeta (premiereAt) {
+      var date = new Date(premiereAt * 1000)
+      var y = date.getFullYear() + '-'
+      var m =
+        (date.getMonth() + 1 < 10
+          ? '0' + (date.getMonth() + 1)
+          : date.getMonth() + 1) + '-'
+      var d = date.getDate() + ''
+      return y + m + d
+    }
   },
 
   created () {
-    // let filmId = this.$route.params.filmId;
-    // this.getFilmDetail()
+    this.getFilmDetail()
   }
-
-  //   beforeRouteEnter (to, from, next) {
-  //     console.log('进入到详情')
-  //     next()
-  //   },
-
-  //   beforeRouteUpdate (to, from, next) {
-  //     console.log('详情页组件路由有更新的情况, 会进来')
-  //     // 上面 watch $route 的代码可以在这里写
-  //     this.getFilmDetail()
-  //     next()
-  //   },
-
-  //   beforeRouteLeave (to, from, next) {
-  //     console.log('详情页离开之前，会调用')
-  //     next()
-  //   }
 }
 </script>
 
@@ -212,7 +228,193 @@ export default {
     }
   }
 
-  .goSchedule{
+  .actors {
+    margin-top: 10px;
+    background-color: #fff;
+    .actors-title-bar {
+      width: 100%;
+      padding: 15px;
+      .actors-title-text {
+        display: inline-block;
+        height: 22.5px;
+        line-height: 22px;
+        font-size: 16px;
+        text-align: left;
+        color: #191a1b;
+      }
+    }
+
+    .actors-list {
+      height: 140px;
+      background: rgb(255, 255, 255);
+      overflow-x: auto;
+      overflow-y: hidden;
+      .row-scroll-items-nav {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        margin: 0;
+        padding-left: 15px;
+        list-style: none;
+        .row-scroll-item {
+          width: 85px;
+          min-width: 85px;
+          position: relative;
+          margin-right: 10px;
+          cursor: pointer;
+          display: block;
+          float: left;
+          .actors-item {
+            text-align: center;
+            .actors-img {
+              width: 85px;
+              height: 85px;
+              position: relative;
+              background: rgb(249, 249, 249);
+              .lazy-img-wrap {
+                width: 85px;
+                height: 85px;
+                background: rgb(249, 249, 249);
+                opacity: 1;
+                display: block;
+                position: absolute;
+                overflow: hidden;
+                top: 0;
+                .target-img {
+                  width: 100%;
+                  position: absolute;
+                  left: 0;
+                  top: 50%;
+                  -webkit-transform: translateY(-50%);
+                }
+              }
+
+              .actors-name {
+                display: block;
+                text-align: center;
+                padding-top: 10px;
+                font-size: 12px;
+                color: #191a1b;
+                width: 85px;
+                height: 18px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+
+              .actors-role {
+                display: block;
+                text-align: center;
+                font-size: 10px;
+                color: #797d82;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .photos {
+    margin-top: 10px;
+    margin-bottom: 60px;
+    background-color: #fff;
+    .photos-title-bar {
+      height: 62px;
+      width: 100%;
+      padding: 15px;
+      .photos-title-text {
+        display: inline-block;
+        height: 22.5px;
+        line-height: 22px;
+        font-size: 16px;
+        text-align: left;
+        color: #191a1b;
+      }
+
+      .photos-to-all {
+        font-size: 13px;
+        color: #797d82;
+        float: right;
+        display: inline-block;
+        height: 22.5px;
+        line-height: 22px;
+        .iconfont {
+          font-size: 13px;
+          font-style: normal;
+          -webkit-font-smoothing: antialiased;
+        }
+      }
+    }
+
+    .photos-list {
+      height: 115px;
+      background: rgb(255, 255, 255);
+      overflow-x: auto;
+      overflow-y: hidden;
+      .row-scroll-items-nav {
+        display: flex;
+        -webkit-box-pack: start;
+        justify-content: flex-start;
+        -webkit-box-align: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        margin: 0;
+        padding-left: 15px;
+        list-style: none;
+        .photos-item-wrap {
+          min-width: 150px;
+          position: relative;
+          margin-right: 10px;
+          width: auto !important;
+          .photos-item {
+            display: block;
+            .photos-img {
+              width: 150px;
+              height: 100px;
+              background: rgb(249, 249, 249);
+              position: relative;
+              .padding {
+                width: 150px;
+                height: 100px;
+                background: rgb(249, 249, 249);
+                display: flex;
+                -webkit-box-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                align-items: center;
+              }
+
+              .lazy-img-wrap {
+                width: 150px;
+                height: 100px;
+                background: rgb(249, 249, 249);
+                opacity: 1;
+                display: block;
+                position: absolute;
+                overflow: hidden;
+                top: 0;
+                justify-content: center;
+                -webkit-box-align: center;
+                align-items: center;
+                .target-img {
+                  width: 100%;
+                  position: absolute;
+                  top: 50%;
+                  -webkit-transform: translateY(-50%);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .goSchedule {
     position: fixed;
     bottom: 0;
     left: 0;
