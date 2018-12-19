@@ -1,5 +1,13 @@
 <template>
 <div class="film">
+  <div class="film-header">
+    <router-link to="/films/nowPlaying">
+    <div class="goBack">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADoAAAA6CAMAAADWZboaAAAAt1BMVEX///////////////////////////9HcEz///////////////////////////////////////////////////////98fHwaGxyIiorX19cdHh9VVlYqKyylpaWysrIfICHMzMz5+fkiIyNCQ0O/v7/x8fE7PD0mJyhub28bHB1hYWOXl5c1NjdMTE1BQkM3ODg5OTrh4eHs7Ozq6uo2Nzdtbm5hYWIbHB2Wlpf9/f1LS00zNTYZGhv6aUMWAAAAPHRSTlOAehgDYHBWAEcTS29+HF8WfXI0dwojs/6sjPvK7p+Z+JCB9diUg97yuvzCpeTR2eLhiIWG4rvD/aWA0uSDEsEyAAABfElEQVRIx82XR3LDMAxFaRWHlK0u9957ip0e3P9cyUJxVAhSE2yMpf68GQz4UcTu/h3sllAROZ4dB0Fse04kqqMGD1kuQm5UQl2LScJytaioMyTqQomavMnQaHITRxOLKcNKMNRvME00fDnaqjFt1Foy1K9A/rB+GU3QbJ8e77M5J0XURCt0OcJDrlZmAeUYuVrDsJf7wvOowN5ztoDNtPC+IoeiHjrBfFnyVRZ1MXIAk3H5q5tBsRrtoT+SueoPNRByC7uDVDCuKFLeNnS6coVf0VCqdzvQRtIJf1EhlQ872KJ+FCkaycRRH/a4laMUdSTaeAIDRRc4KeqVpeUcTqoG8lLULinTDSxmKtRO0bgo9IawXinbNk7RoCg8w/Gs7vgAR78u1VBCwoQyyR/n86PC4xAsgRnxVW9E1P4vWvsTmo7S6viAeXvXDBjCWKMMU8IIpywOwrpSLMmzbkkSVjPlIKCcIZTjh3JyUQ49ynlJOmpJpzTpgL/pn5VvmSw+jOd3uBgAAAAASUVORK5CYII=">
+    </div>
+    </router-link>
+    <div class="title">海王 </div>
+  </div>
   <ul>
     <li
     v-for="(item,index) in details"
@@ -146,6 +154,32 @@ export default {
 .film {
   flex: 1;
   overflow-y: auto;
+
+  .film-header{
+    position: fixed;
+    background-color: hsla(0,0%,100%,0);
+    color: transparent;
+    transition: all .3s ease;
+    width: 100vw;
+    height: 44px;
+    z-index: 1;
+    .goBack{
+      height: 30px;
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      img{
+        width: 30px;
+      }
+    }
+
+    .title{
+      font-size: 17px;
+      line-height: 44px;
+      width: 100vw;
+      text-align: center;
+    }
+  }
 
   .film-poster {
     height: px2rem(210);

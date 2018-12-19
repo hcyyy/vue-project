@@ -61,6 +61,12 @@ const router = new VueRouter({
       component: () => import('./views/FilmDetail.vue')
     },
     {
+      // 登录页面
+      path: '/login',
+      name: 'login',
+      component: () => import('./views/Login.vue')
+    },
+    {
       path: '*',
       redirect: 'films/nowPlaying'
     }
