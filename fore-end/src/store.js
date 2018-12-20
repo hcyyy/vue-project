@@ -22,24 +22,74 @@ const store = new Vuex.Store({
       },
       {
         name: '霸道总裁爱上我',
-        islove: 'true'
+        islove: 'false'
       }
+    ],
+
+    filmscard: [
+
     ]
   },
 
   // 对当前的state里面的某一个状态做派生,类似计算属性
   getters: {
-    // myLoveBooks (state) {
-    //   return state.books.filter(item => {
-    //     return item.islove
-    //   })
-    // }
+    myLoveBooks (state) {
+      return state.books.filter(item => {
+        return item.islove
+      })
+    }
   },
 
   // 唯一能修改state状态的地方
   mutations: {
     chgCurCity (state, payload) {
       state.curCity = payload.cityName
+    },
+
+    addFilm (state, payload) {
+      let filmId = payload.filmId
+      let index = -1
+      let isZai = state.filmscard.some((item, i) => {
+        if (item.filmId === filmId) {
+          index = i
+          return true
+        }
+        return false
+      })
+      if (isZai) {
+        state.filmscard[index].filmNum++
+      } else {
+        state.filmscard.push({
+          filmId: payload.filmId,
+          filmName: payload.name,
+          filmPrice: Math.random(10, 20),
+          filmNum: 1
+        })
+      }
+
+      localStorage.setItem('filmscard', JSON.stringify(state.filmscard))
+      // state.filmscard.push(payload)
+    },
+
+    reducefilm (state, payload) {
+      let index = -1
+      state.filmscard.forEach((item, i) => {
+        if (item.filmId === payload.filmId) {
+          index = i
+        }
+      })
+
+      if (index > -1) {
+        // state.filmscard.splice(index, 1)
+        let film = state.filmscard[index]
+        if (film.filmNum > 1) {
+          film.filmNum--
+        } else {
+          state.filmscard.splice(index, 1)
+        }
+      }
+
+      localStorage.setItem('filmscard', JSON.stringify(state.filmscard))
     }
   },
 

@@ -26,7 +26,10 @@
                             <span class="d-label">{{item.nation}} | {{item.runtime}}</span>
                         </div>
                     </div>
-                    <div class="buy">购票</div>
+                    <!-- <div class="buy" @click="addCard(item)">购票</div> -->
+                    <button @click.stop="reducefilm(item)">-</button>
+                    <input type="text" disabled :value="findNum(item)">
+                    <button @click.stop="addFilm(item)">+</button>
                 </li>
             </ul>
 
@@ -36,6 +39,7 @@
 
 <script>
 import axios from 'axios'
+import {mapMutations, mapState} from 'vuex'
 
 export default {
   name: 'Nowplay',
@@ -50,7 +54,19 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState([
+      'filmscard'
+    ])
+  },
+
   methods: {
+
+    ...mapMutations([
+      'addFilm',
+      'reducefilm'
+    ]),
+
     getFilms () {
       axios.get('/api/film/list', {
         params: {
@@ -71,6 +87,10 @@ export default {
           if (result.code === 0) {
             // this.films = result.data.films
             // this.films = this.films.push(result)
+            for (var i = 0; i < result.data.films.length; i++) {
+              result.data.films[i].num = 0
+            }
+
             this.films = this.films.concat(result.data.films)
           } else {
             alert(result.msg)
@@ -102,7 +122,30 @@ export default {
           filmId: id
         }
       })
+    },
+
+    findNum (item) {
+      let filmId = item.filmId
+
+      let num = 0
+
+      this.filmscard.forEach(item => {
+        if (item.filmId === filmId) {
+          num = item.filmNum
+        }
+      })
+      return num
     }
+
+    // addCard (item, index) {
+    //   item.num++
+    //   this.$store.commit('addFilm', {
+    //     filmId: item.filmId,
+    //     filmName: item.filmName,
+    //     filmPrice: Math.random(10, 20),
+    //     filmNum: 1
+    //   })
+    // }
   },
 
   created () {

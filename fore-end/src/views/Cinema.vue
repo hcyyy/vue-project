@@ -5,6 +5,12 @@
         <h2>{{projectName}}</h2>
         <h2>{{cinemaCity}}</h2>
         <button @click="change">修改城市</button>
+        <ul>
+          <li v-for="(item,index) in myLoveBooks"
+          :key="index">
+          {{item.name}}
+          </li>
+        </ul>
     </div>
 </template>
 
@@ -32,6 +38,10 @@ export default {
     ]),
     cinemaCity () {
       return this.cinemaName.split('-')[0]
+    },
+
+    myLoveBooks () {
+      return this.$store.getters.myLoveBooks
     }
   },
 
