@@ -60,13 +60,12 @@
 
 <script>
 import Swiper from 'swiper'
-import store from '../store.js'
 export default {
   name: 'Films',
 
   data () {
     return {
-      store: store
+      curCity: ''
     }
   },
 
@@ -91,7 +90,7 @@ export default {
   },
 
   created () {
-    // this.getCityName();
+    this.getCityName();
   },
 
   mounted () {
